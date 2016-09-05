@@ -1,0 +1,16 @@
+---
+- name: This is a play for creating users and provisioning ec2 instances
+  hosts: localhost
+  connection: local
+  roles:
+    - create-user
+    - provision-ec2
+
+- name: Setup and Run SFTP server
+  tags: RunSFTPServer
+  hosts: sftpservers
+  gather_facts: true
+  sudo: yes
+  remote_user: ubuntu
+  roles:
+    - vsftpd

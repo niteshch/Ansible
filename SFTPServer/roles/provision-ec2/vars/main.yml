@@ -1,0 +1,12 @@
+ec2_keypair: "Nitesh"
+ec2_security_group: "sg-821504e4"
+ec2_instance_type: "t2.micro"
+ec2_image: "ami-fce3c696"
+ec2_region: "us-east-1"
+ec2_tag_Name: "SFTPServer"
+ec2_tag_Type: "sftpserver"
+ec2_tag_Environment: "development"
+ec2_volume_size: 8
+ec2_subnet_ids: ['subnet-29e63245']
+ec2_instance_count: 1
+ec2_device_type: gp2

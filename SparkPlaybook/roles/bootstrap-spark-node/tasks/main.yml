@@ -1,0 +1,66 @@
+- name: Install pre-requisites packages
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+    - wget
+    - tar
+    - gzip
+    - unzip
+    - openjdk-7-jdk
+    - git
+    - postgresql
+    - python-psycopg2
+    - build-essential
+    - gfortran
+    - libpq-dev
+    - libncurses5-dev
+    - libffi-dev
+    - libopenblas-dev
+    - liblapack-dev
+    - locales
+    - python-dev
+    - python-pip
+    - rsync
+    - uwsgi
+    - uwsgi-plugin-python
+
+- name: Install pexpect package
+  pip: name=pexpect
+
+- name: Download scala
+  get_url: url={{ scala_download_url }} dest="/home/ubuntu/"
+
+- name: Install scala
+  apt: deb="/home/ubuntu/scala-{{ scala_version }}.deb"
+
+- name: Download Anaconda
+  get_url: url={{ anaconda_download_url }} dest="/home/ubuntu/"
+
+- name: Install Anaconda
+  command: "bash /home/ubuntu/Anaconda2-{{ anaconda_version }}.sh -b -p /home/ubuntu/anaconda2 creates=/home/ubuntu/anaconda2"
+
+- name: Add anaconda to path
+  lineinfile:
+    dest=/home/ubuntu/.profile
+    state=present
+    line="export PATH=$PATH:/home/ubuntu/anaconda2/bin"
+
+- name: Load profile
+  shell: ". /home/ubuntu/.profile"
+
+- name: Delete virtual environment
+  command: "/home/ubuntu/anaconda2/bin/conda remove --name test --all -y"
+
+- name: Create virtual environment
+  command: "/home/ubuntu/anaconda2/bin/conda create -n test -y anaconda"
+
+- name: Copy requirements file
+  copy: src={{ requirements_path }} dest=/home/ubuntu/
+
+- name: Copy scientific requirements
+  copy: src={{ scientific_requirements_path }} dest=/home/ubuntu/
+
+- name: Install python requirements
+  pip:  requirements=/home/ubuntu/requirements.txt virtualenv=/home/ubuntu/anaconda2/envs/test
+
+- name: Install python scientific requirements
+  pip:  requirements=/home/ubuntu/scientific_requirements.txt virtualenv=/home/ubuntu/anaconda2/envs/test

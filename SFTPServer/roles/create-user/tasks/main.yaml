@@ -1,0 +1,8 @@
+---
+- name: Create the public key repository
+  command: mkdir -p ~/ansible/files
+
+- name: Create the public key files for each user
+  command: ssh-keygen -t rsa -f ~/ansible/files/authorized_keys.{{ item.username }} -q -P ""
+  with_items: "{{vsftpd_users}}"
+  ignore_errors: yes

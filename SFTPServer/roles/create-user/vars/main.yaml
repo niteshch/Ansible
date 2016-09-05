@@ -1,0 +1,7 @@
+vsftpd_users:
+  - username: ftpuser
+    name: FTP User
+  - username: niteshch
+    name: Nitesh Chauhan
+  - username: johndoe
+    name: John Doe
